@@ -1,15 +1,23 @@
 var SpeechRecognition = window.webkitSpeechRecognition;
 var rec = new SpeechRecognition();
 
-function start() {
-    document.getElementById("output").innerHTML="";
-    rec.start();
-}
 rec.onresult=function(event) {
     console.log(event);
     var content=event.results[0][0].transcript;
     console.log(content)
     document.getElementById("output").innerHTML=content;
+
+    if(content == "Cheese.") {
+        console.log(content);
+        
+        done();
+        
+    }
+}
+
+function start() {
+    document.getElementById("output").innerHTML="";
+    rec.start();    
 }
 
 Webcam.set({
@@ -21,4 +29,27 @@ Webcam.set({
 
 camera=document.getElementById("livecam")
 
-Webcam.attach(camera)
+Webcam.attach(camera);
+
+function pic() {
+    Webcam.snap(function (data_uri){
+        document.getElementById("selfie").innerHTML='<img id="selfie_img" src="'+data_uri+'">'
+    })
+    save();
+}
+
+function save() {
+    link=document.getElementById("download");
+    img=document.getElementById("selfie_img").src;
+    link.href=img;
+    link.click();
+
+    window.alert("Photo saved")
+}
+
+function done() {
+  
+    pic();
+    
+      
+}
